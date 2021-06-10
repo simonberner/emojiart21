@@ -3,7 +3,7 @@ import Foundation
 // Model
 struct EmojiArtModel {
     var background = Background.blank
-    var emojis = [Emoji]()
+    var emojis = [Emoji]() // is an array of identifiables
     
     // Hashable to put them into a set
     struct Emoji: Identifiable, Hashable {

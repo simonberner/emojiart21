@@ -15,6 +15,8 @@
 		151CCB1C2670FB970042470D /* EmojiArt21UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB1B2670FB970042470D /* EmojiArt21UITests.swift */; };
 		151CCB2B2670FD740042470D /* EmojiArtModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2A2670FD740042470D /* EmojiArtModel.swift */; };
 		151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */; };
+		151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2E267155750042470D /* EmojiArtDocument.swift */; };
+		1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562746B2672599900642AA5 /* UtilityExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,8 @@
 		151CCB292670FBCF0042470D /* EmojiArt21.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EmojiArt21.entitlements; sourceTree = "<group>"; };
 		151CCB2A2670FD740042470D /* EmojiArtModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtModel.swift; sourceTree = "<group>"; };
 		151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtModel.Background.swift; sourceTree = "<group>"; };
+		151CCB2E267155750042470D /* EmojiArtDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtDocument.swift; sourceTree = "<group>"; };
+		1562746B2672599900642AA5 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +107,10 @@
 				151CCB292670FBCF0042470D /* EmojiArt21.entitlements */,
 				151CCAFE2670FB950042470D /* EmojiArt21App.swift */,
 				151CCB002670FB950042470D /* ContentView.swift */,
+				151CCB2E267155750042470D /* EmojiArtDocument.swift */,
 				151CCB2A2670FD740042470D /* EmojiArtModel.swift */,
 				151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */,
+				1562746B2672599900642AA5 /* UtilityExtensions.swift */,
 				151CCB022670FB970042470D /* Assets.xcassets */,
 				151CCB072670FB970042470D /* Info.plist */,
 				151CCB042670FB970042470D /* Preview Content */,
@@ -269,6 +275,8 @@
 			files = (
 				151CCB012670FB950042470D /* ContentView.swift in Sources */,
 				151CCAFF2670FB950042470D /* EmojiArt21App.swift in Sources */,
+				1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */,
+				151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */,
 				151CCB2B2670FD740042470D /* EmojiArtModel.swift in Sources */,
 				151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */,
 			);
