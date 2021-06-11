@@ -9,6 +9,9 @@ class EmojiArtDocument: ObservableObject {
     
     init() {
         emojiArt = EmojiArtModel()
+        emojiArt.addEmoji("😷", at: (-200, -100), size: 80)
+        emojiArt.addEmoji("😇", at: (0, 0), size: 80)
+
     }
     
     // convenient functions, so that a caller can get the emojis array of the model

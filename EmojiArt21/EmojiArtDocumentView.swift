@@ -13,7 +13,39 @@ struct EmojiArtDocumentView: View {
     }
     
     var documentBody: some View {
-        Color.yellow
+        // the GeometryReader reads the geometry from its content
+        GeometryReader { geometry in
+            ZStack {
+                Color.yellow
+                ForEach(document.emojis) { emoji in
+                    Text(emoji.text)
+                        .font(.system(size: fontSize(for: emoji)))
+                        .position(position(for: emoji, in: geometry))
+                }
+            }
+        }
+        
+    }
+    
+    // used later on when pinching the size of an emoji
+    private func fontSize(for emoji: EmojiArtModel.Emoji) -> CGFloat {
+        CGFloat(emoji.size)
+    }
+    
+    // position an emoji on the document
+    private func position(for emoji: EmojiArtModel.Emoji, in geometry: GeometryProxy) -> CGPoint {
+        convertFromEmojiCoordinates((emoji.x, emoji.y), in: geometry)
+    }
+    
+    // convert from the emoji art coordinated to the views coordinates
+    private func convertFromEmojiCoordinates(_ location: (x: Int, y: Int), in geometry: GeometryProxy) -> CGPoint {
+        // get the center of the view
+        let center = geometry.frame(in: .local).center
+        
+        return CGPoint(
+            x: center.x + CGFloat(location.x),
+            y: center.y + CGFloat(location.y))
+        
     }
     
     var palette: some View {
