@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,7 @@
 		151CCB2B2670FD740042470D /* EmojiArtModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2A2670FD740042470D /* EmojiArtModel.swift */; };
 		151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */; };
 		151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2E267155750042470D /* EmojiArtDocument.swift */; };
+		15392D622676346D00735DE4 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 15392D612676346D00735DE4 /* SwiftUIX */; };
 		1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562746B2672599900642AA5 /* UtilityExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15392D622676346D00735DE4 /* SwiftUIX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +162,9 @@
 			dependencies = (
 			);
 			name = EmojiArt21;
+			packageProductDependencies = (
+				15392D612676346D00735DE4 /* SwiftUIX */,
+			);
 			productName = EmojiArt21;
 			productReference = 151CCAFB2670FB950042470D /* EmojiArt21.app */;
 			productType = "com.apple.product-type.application";
@@ -231,6 +236,9 @@
 				Base,
 			);
 			mainGroup = 151CCAF22670FB950042470D;
+			packageReferences = (
+				15392D602676346D00735DE4 /* XCRemoteSwiftPackageReference "SwiftUIX" */,
+			);
 			productRefGroup = 151CCAFC2670FB950042470D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -602,6 +610,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		15392D602676346D00735DE4 /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		15392D612676346D00735DE4 /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15392D602676346D00735DE4 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
+			productName = SwiftUIX;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 151CCAF32670FB950042470D /* Project object */;
 }
