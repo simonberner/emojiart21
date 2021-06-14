@@ -1,5 +1,6 @@
 import SwiftUI
 
+// View (of the MVVM architectural pattern)
 struct EmojiArtDocumentView: View {
     @ObservedObject var document: EmojiArtDocument
     
@@ -23,6 +24,25 @@ struct EmojiArtDocumentView: View {
                         .position(position(for: emoji, in: geometry))
                 }
             }
+            .onDrop(of: [.plainText], isTargeted: nil) { providers, location in
+                drop(providers: providers, at: location, in: geometry)
+            }
+        }
+        
+    }
+    
+    private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {
+        // this func is going to check wether the providers have a String
+        // (because they might have not and instead have e.g. an image)
+        // if they do have a string, it is going to call the closure with the string (emoji it
+        // found in there (note: it is going to do that asynchronously)
+        return providers.loadObjects(ofType: String.self) { string in
+            if let emoji = string.first, emoji.isEmoji {
+                document.addEmoji(String(emoji),
+                                  at: convertToEmojiCoordinates(location, in: geometry),
+                                  size: defaultEmojiFontSize)
+            }
+            
         }
         
     }
@@ -35,6 +55,19 @@ struct EmojiArtDocumentView: View {
     // position an emoji on the document
     private func position(for emoji: EmojiArtModel.Emoji, in geometry: GeometryProxy) -> CGPoint {
         convertFromEmojiCoordinates((emoji.x, emoji.y), in: geometry)
+    }
+    
+    // convert from the view coordinates (upper left 0/0) to the emoji art coordinates
+    private func convertToEmojiCoordinates(_ location: CGPoint, in geometry: GeometryProxy) -> (x: Int, y: Int) {
+        // get the center of the view
+        let center = geometry.frame(in: .local).center
+        
+        let location = CGPoint (
+            x: location.x - center.x,
+            y: location.y - center.y
+        )
+        
+        return (Int(location.x), Int(location.y))
     }
     
     // convert from the emoji art coordinated to the views coordinates
@@ -70,6 +103,8 @@ struct ScrollingEmojisView: View {
                 // in our emojis array) so we put the emoji string itself (\.self) as an id
                 ForEach(emojis.map { String($0) }, id: \.self) { emoji in
                     Text(emoji)
+                        // the NSItemProvider provides us with its information asynchronously
+                        .onDrag({ NSItemProvider(object: emoji as NSString) }) // NS comes from the Objective-C world
                 }
             }
         }
