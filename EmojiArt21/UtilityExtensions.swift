@@ -74,3 +74,24 @@ extension Character {
         }
     }
 }
+
+// sometimes image urls are wrapped in to another url (which defines where the image is coming from)
+// extracting the actual url to an imageURL from a url that might contain other info
+// (essentially looking for the imgurl key)
+// imgurl is a "well known" key that can be embedded in a url that says what the actual image url is
+extension URL {
+    var imageURL: URL {
+        for query in query?.components(separatedBy: "&") ?? [] {
+            let queryComponents = query.components(separatedBy: "=")
+            if queryComponents.count == 2 {
+                // if the component has an imgurl it will return just that imageURL
+                if queryComponents[0] == "imgurl", let url = URL(string: queryComponents[1].removingPercentEncoding ?? "") {
+                    return url
+                }
+            }
+        }
+        // self: if it is not an imgurl, it is returning self (the normal url)
+//        return baseURL ?? self
+        return self
+    }
+}

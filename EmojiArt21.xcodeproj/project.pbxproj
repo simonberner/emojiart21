@@ -17,6 +17,7 @@
 		151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */; };
 		151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2E267155750042470D /* EmojiArtDocument.swift */; };
 		1534057E267A334100A41D73 /* LoggerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1534057D267A334100A41D73 /* LoggerExtension.swift */; };
+		15340580267A4C1A00A41D73 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1534057F267A4C1A00A41D73 /* UtilityViews.swift */; };
 		15392D622676346D00735DE4 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 15392D612676346D00735DE4 /* SwiftUIX */; };
 		15392D6426763A6E00735DE4 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 15392D6326763A6E00735DE4 /* .gitignore */; };
 		1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562746B2672599900642AA5 /* UtilityExtensions.swift */; };
@@ -57,6 +58,7 @@
 		151CCB2C267119C60042470D /* EmojiArtModel.Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtModel.Background.swift; sourceTree = "<group>"; };
 		151CCB2E267155750042470D /* EmojiArtDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtDocument.swift; sourceTree = "<group>"; };
 		1534057D267A334100A41D73 /* LoggerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtension.swift; sourceTree = "<group>"; };
+		1534057F267A4C1A00A41D73 /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		15392D6326763A6E00735DE4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		1562746B2672599900642AA5 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 				151CCB072670FB970042470D /* Info.plist */,
 				151CCB042670FB970042470D /* Preview Content */,
 				1534057D267A334100A41D73 /* LoggerExtension.swift */,
+				1534057F267A4C1A00A41D73 /* UtilityViews.swift */,
 			);
 			path = EmojiArt21;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				151CCB2B2670FD740042470D /* EmojiArtModel.swift in Sources */,
 				1534057E267A334100A41D73 /* LoggerExtension.swift in Sources */,
 				151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */,
+				15340580267A4C1A00A41D73 /* UtilityViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

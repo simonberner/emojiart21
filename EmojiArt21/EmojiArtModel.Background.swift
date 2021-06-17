@@ -3,7 +3,8 @@ import Foundation
 // Model extension
 extension EmojiArtModel {
     
-    enum Background {
+    // Equatable so that we can check for equality of backgrounds
+    enum Background: Equatable {
         case blank
         case url(URL) // associated data
         case imageData(Data) // associated data
