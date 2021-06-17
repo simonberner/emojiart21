@@ -26,9 +26,20 @@ class EmojiArtDocument: ObservableObject {
         case .url(let url): // EmojiArtModel.Background.url
             // ignore the error which is thrown back at us: try this, if it fails return nil
             // (because this can easily fail)
-            let imageData = try? Data(contentsOf: url) // will actually GET that image!
-            if imageData != nil {
-                backgroundImage = UIImage(data: imageData!)
+            DispatchQueue.global(qos: .userInitiated).async { // takes the closure an puts it on a queue in some other thread than the main thread
+                let imageData = try? Data(contentsOf: url) // will actually GET that image!
+                // weak: it doesn't force to keep the self in the heap
+                // if no-one else keeps it in the heap, if it goes away it will turn to nil
+                DispatchQueue.main.async { [weak self] in
+                    // check if current background equals the background
+                    // with the url that is the same as the url we just looked up
+                    if self?.emojiArt.background == EmojiArtModel.Background.url(url) {
+                        if imageData != nil {
+                            // self?: if self is nil, don't do the rest
+                            self?.backgroundImage = UIImage(data: imageData!)
+                        }
+                    }
+                }
             }
         case .imageData(let data): // // EmojiArtModel.Background.imageData
             backgroundImage = UIImage(data: data) //UIImage is an image like jpeg, png
