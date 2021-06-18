@@ -24,11 +24,14 @@ struct EmojiArtDocumentView: View {
                         // put the background image into the emoji coordinate center
                         .position(convertFromEmojiCoordinates((x: 0, y: 0), in: geometry))
                 )
-                ForEach(document.emojis) { emoji in
-                    Text(emoji.text)
-                        .font(.system(size: fontSize(for: emoji)))
-                        .position(position(for: emoji, in: geometry))
-                }
+                if document.backgroundImageFetchStatus == .fetching {
+                    ProgressView().scaleEffect(4)
+                } else {
+                    ForEach(document.emojis) { emoji in
+                        Text(emoji.text)
+                            .font(.system(size: fontSize(for: emoji)))
+                            .position(position(for: emoji, in: geometry))
+                    }                }
             }
             .onDrop(of: [.plainText,.url,.image], isTargeted: nil) { providers, location in
                 drop(providers: providers, at: location, in: geometry)
