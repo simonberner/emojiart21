@@ -21,18 +21,22 @@ struct EmojiArtDocumentView: View {
             ZStack {
                 Color.white.overlay(
                     OptionalImage(uiImage: document.backgroundImage)
+                        .scaleEffect(zoomScale)
                         // put the background image into the emoji coordinate center
                         .position(convertFromEmojiCoordinates((x: 0, y: 0), in: geometry))
                 )
+                .gesture(doubleTapToZoom(in: geometry.size))
                 if document.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(4)
                 } else {
                     ForEach(document.emojis) { emoji in
                         Text(emoji.text)
                             .font(.system(size: fontSize(for: emoji)))
+                            .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
                     }                }
             }
+            // allowing dropping emojis (.plainText) on to the document, urls and images on to set the background
             .onDrop(of: [.plainText,.url,.image], isTargeted: nil) { providers, location in
                 drop(providers: providers, at: location, in: geometry)
             }
@@ -66,7 +70,7 @@ struct EmojiArtDocumentView: View {
                 if let emoji = string.first, emoji.isEmoji {
                     document.addEmoji(String(emoji),
                                       at: convertToEmojiCoordinates(location, in: geometry),
-                                      size: defaultEmojiFontSize)
+                                      size: defaultEmojiFontSize / zoomScale)
                 }
                 
             }
@@ -79,33 +83,60 @@ struct EmojiArtDocumentView: View {
         CGFloat(emoji.size)
     }
     
+    private func doubleTapToZoom(in size: CGSize) -> some Gesture {
+        // implicit return
+        TapGesture(count: 2)
+            .onEnded {
+                withAnimation {
+                    zoomToFit(document.backgroundImage, in: size)
+                }
+            }
+    }
+    
+    // this has nothing to do with our model
+    // it has only to do with how our view is displayed
+    @State private var zoomScale: CGFloat = 1
+    
+    private func zoomToFit(_ image: UIImage?, in size: CGSize) {
+        if let image = image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
+            // zoom factor in a horizontal direction
+            let hZoom = size.width / image.size.width
+            // zoom factor in a vertical direction
+            let vZoom = size.height / image.size.height
+            // we need to pick the smaller of the two, to fit the whole image into the document
+            zoomScale = min(hZoom, vZoom)
+        }
+    }
+    
     // position an emoji on the document
     private func position(for emoji: EmojiArtModel.Emoji, in geometry: GeometryProxy) -> CGPoint {
         convertFromEmojiCoordinates((emoji.x, emoji.y), in: geometry)
     }
     
     // convert from the view coordinates (upper left 0/0) to the emoji art coordinates
+    // how far are we from the center
     private func convertToEmojiCoordinates(_ location: CGPoint, in geometry: GeometryProxy) -> (x: Int, y: Int) {
         // get the center of the view
         let center = geometry.frame(in: .local).center
         
         let location = CGPoint (
-            x: location.x - center.x,
-            y: location.y - center.y
+            x: (location.x - center.x) / zoomScale,
+            y: (location.y - center.y) / zoomScale
         )
         
         return (Int(location.x), Int(location.y))
     }
     
     // convert from the emoji art coordinated to the views coordinates
+    // move out from the center
     private func convertFromEmojiCoordinates(_ location: (x: Int, y: Int), in geometry: GeometryProxy) -> CGPoint {
         // get the center of the view
         let center = geometry.frame(in: .local).center
         
         return CGPoint(
-            x: center.x + CGFloat(location.x),
-            y: center.y + CGFloat(location.y))
-        
+            x: center.x + CGFloat(location.x) * zoomScale,
+            y: center.y + CGFloat(location.y) * zoomScale
+        )
     }
     
     var palette: some View {
