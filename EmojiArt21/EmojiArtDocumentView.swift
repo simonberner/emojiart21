@@ -34,8 +34,11 @@ struct EmojiArtDocumentView: View {
                             .font(.system(size: fontSize(for: emoji)))
                             .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
-                    }                }
+                    }
+                }
             }
+            // clips this view to its bounding rectangular frame
+            .clipped()
             // allowing dropping emojis (.plainText) on to the document, urls and images on to set the background
             .onDrop(of: [.plainText,.url,.image], isTargeted: nil) { providers, location in
                 drop(providers: providers, at: location, in: geometry)
