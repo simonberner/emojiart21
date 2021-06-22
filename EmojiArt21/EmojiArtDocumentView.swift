@@ -43,6 +43,7 @@ struct EmojiArtDocumentView: View {
             .onDrop(of: [.plainText,.url,.image], isTargeted: nil) { providers, location in
                 drop(providers: providers, at: location, in: geometry)
             }
+            .gesture(zoomGesture())
         }
         
     }
@@ -98,7 +99,32 @@ struct EmojiArtDocumentView: View {
     
     // this has nothing to do with our model
     // it has only to do with how our view is displayed
-    @State private var zoomScale: CGFloat = 1
+    // this is the steady zoom scale when no zoomGesture is ongoing
+    @State private var steadyStateZoomScale: CGFloat = 1
+    // exists only while the gesture is ongoing
+    // (otherwise its read only set to 1)
+    @GestureState private var gestureZoomScale: CGFloat = 1
+    
+    // combination of the two zoomScales above
+    // takes effect when the gestureZoomScale is happening
+    private var zoomScale: CGFloat {
+        steadyStateZoomScale * gestureZoomScale
+    }
+    
+    private func zoomGesture() -> some Gesture {
+        // an non-descrete gesture, pinch-to-zoom
+        MagnificationGesture()
+            // gesture modifier, 3 arguments closure which is constantly called
+            // update the @GestureState gestureZoomScale
+            // gestureZoomScale here is actually gestureZoomScaleInOut (in/out argument)
+            .updating($gestureZoomScale) { latestGestureScale, gestureZoomScale, transaction in
+                gestureZoomScale = latestGestureScale  // gestureZoomScale is the in/out version
+            }
+            // with onEnded, we get the var gestureScaleAtEnd which gets passed to us
+            .onEnded { gestureScaleAtEnd in
+                steadyStateZoomScale *= gestureScaleAtEnd
+            }
+    }
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) {
         if let image = image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
@@ -107,7 +133,7 @@ struct EmojiArtDocumentView: View {
             // zoom factor in a vertical direction
             let vZoom = size.height / image.size.height
             // we need to pick the smaller of the two, to fit the whole image into the document
-            zoomScale = min(hZoom, vZoom)
+            steadyStateZoomScale = min(hZoom, vZoom)
         }
     }
     
