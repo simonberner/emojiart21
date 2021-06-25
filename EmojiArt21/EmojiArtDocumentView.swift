@@ -43,7 +43,8 @@ struct EmojiArtDocumentView: View {
             .onDrop(of: [.plainText,.url,.image], isTargeted: nil) { providers, location in
                 drop(providers: providers, at: location, in: geometry)
             }
-            .gesture(zoomGesture())
+            // recommendation: put no more than one .gesture on any view
+            .gesture(panGesture().simultaneously(with: zoomGesture()))
         }
         
     }
@@ -87,6 +88,26 @@ struct EmojiArtDocumentView: View {
         CGFloat(emoji.size)
     }
     
+    // panning around the document (width and height directions for each var)
+    @State private var steadyStatePanOffset: CGSize = CGSize.zero
+    // state var while the gesture (panning) is happening
+    @GestureState private var gesturePanOffset: CGSize = CGSize.zero
+    
+    private var panOffset: CGSize {
+        (steadyStatePanOffset + gesturePanOffset)  * zoomScale
+    }
+    
+    private func panGesture () -> some Gesture {
+        DragGesture()
+            .updating($gesturePanOffset) { latestDragGestureValue, gesturePanOffset, _ in
+                gesturePanOffset = latestDragGestureValue.translation / zoomScale
+            }
+            .onEnded { finalDragGestureValue in
+                steadyStatePanOffset = steadyStatePanOffset + (finalDragGestureValue.translation / zoomScale)
+            }
+    }
+        
+    
     private func doubleTapToZoom(in size: CGSize) -> some Gesture {
         // implicit return
         TapGesture(count: 2)
@@ -126,12 +147,15 @@ struct EmojiArtDocumentView: View {
             }
     }
     
+    // when double tab to zoom gesture
     private func zoomToFit(_ image: UIImage?, in size: CGSize) {
         if let image = image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
             // zoom factor in a horizontal direction
             let hZoom = size.width / image.size.width
             // zoom factor in a vertical direction
             let vZoom = size.height / image.size.height
+            // jump to the middle
+            steadyStatePanOffset = .zero // Swift will infer the CGSize
             // we need to pick the smaller of the two, to fit the whole image into the document
             steadyStateZoomScale = min(hZoom, vZoom)
         }
@@ -149,8 +173,8 @@ struct EmojiArtDocumentView: View {
         let center = geometry.frame(in: .local).center
         
         let location = CGPoint (
-            x: (location.x - center.x) / zoomScale,
-            y: (location.y - center.y) / zoomScale
+            x: (location.x - panOffset.width - center.x) / zoomScale,
+            y: (location.y - panOffset.height - center.y) / zoomScale
         )
         
         return (Int(location.x), Int(location.y))
@@ -163,8 +187,8 @@ struct EmojiArtDocumentView: View {
         let center = geometry.frame(in: .local).center
         
         return CGPoint(
-            x: center.x + CGFloat(location.x) * zoomScale,
-            y: center.y + CGFloat(location.y) * zoomScale
+            x: center.x + CGFloat(location.x) * zoomScale + panOffset.width,
+            y: center.y + CGFloat(location.y) * zoomScale + panOffset.height
         )
     }
     

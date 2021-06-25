@@ -95,3 +95,23 @@ extension URL {
         return self
     }
 }
+
+// extension to be able to do the four basic mathematical
+// operations of two CGSize's in an easy way
+extension CGSize {
+    var center: CGPoint {
+        CGPoint(x: width/2, y: height/2)
+    }
+    static func +(leftHandSide: Self, rightHandSide: Self) -> CGSize {
+        CGSize(width: leftHandSide.width + rightHandSide.width, height: leftHandSide.height + rightHandSide.height)
+    }
+    static func -(leftHandSide: Self, rightHandSide: Self) -> CGSize {
+        CGSize(width: leftHandSide.width - rightHandSide.width, height: leftHandSide.height - rightHandSide.height)
+    }
+    static func *(leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
+        CGSize(width: leftHandSide.width * rightHandSide, height: leftHandSide.height * rightHandSide)
+    }
+    static func /(leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
+        CGSize(width: leftHandSide.width / rightHandSide, height: leftHandSide.height / rightHandSide)
+    }
+}
