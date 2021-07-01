@@ -1,4 +1,5 @@
 import SwiftUI
+import OSLog
 
 // extension for the protocol Collection
 extension Collection where Element: Identifiable {
@@ -113,5 +114,20 @@ extension CGSize {
     }
     static func /(leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
         CGSize(width: leftHandSide.width / rightHandSide, height: leftHandSide.height / rightHandSide)
+    }
+}
+
+// extension to add/remove an element from a set based on whether it's
+// already in the set
+extension Set where Element: Identifiable {
+    mutating func toogleMatching(element: Element) {
+        if contains(element) {
+            remove(element)
+//            Logger.utilityExtensions.info("\(element) deselected")
+            print("\(element) deselected")
+        } else {
+            insert(element)
+            print("\(element) selected")
+        }
     }
 }

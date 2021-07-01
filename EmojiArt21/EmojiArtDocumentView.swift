@@ -1,4 +1,5 @@
 import SwiftUI
+import OSLog
 
 // View (of the MVVM architectural pattern)
 struct EmojiArtDocumentView: View {
@@ -25,7 +26,9 @@ struct EmojiArtDocumentView: View {
                         // put the background image into the emoji coordinate center
                         .position(convertFromEmojiCoordinates((x: 0, y: 0), in: geometry))
                 )
-                .gesture(doubleTapToZoom(in: geometry.size))
+                .gesture(doubleTapToZoom(in: geometry.size)
+                            .exclusively(before: deselectAllEmojisGesture())
+                )
                 if document.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(4)
                 } else {
@@ -34,6 +37,13 @@ struct EmojiArtDocumentView: View {
                             .font(.system(size: fontSize(for: emoji)))
                             .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
+                            .gesture(selectionGesture(for: emoji))
+                            .background(Circle()
+                                            .stroke(Color.blue, lineWidth: 2.0)
+                                            .opacity(isSelected(emoji) ? 1 : 0)
+                                            .offset(selectionOffset(for: emoji))
+                                            .frame(width: 30 * zoomScale, height: 30 * zoomScale, alignment: .center)
+                            )
                     }
                 }
             }
@@ -147,6 +157,32 @@ struct EmojiArtDocumentView: View {
             }
     }
     
+    // selection of emojis in the EmojiArt document
+    // State: https://developer.apple.com/documentation/swiftui/state
+    @State private var selectedEmojis = Set<EmojiArtModel.Emoji>()
+    
+    private func isSelected(_ emoji: EmojiArtModel.Emoji) -> Bool {
+        selectedEmojis.contains(emoji) // implicitly return statement
+    }
+    
+    private func selectionGesture(for emoji: EmojiArtModel.Emoji) -> some Gesture {
+        TapGesture(count: 1) // single tap
+            .onEnded {
+                selectedEmojis.toogleMatching(element: emoji)
+            }
+    }
+    
+    // deselect all emojis by single-tapping on the document
+    private func deselectAllEmojisGesture() -> some Gesture {
+        TapGesture(count: 1)
+            .onEnded {
+                withAnimation(.linear(duration: 0.3)) {
+                    selectedEmojis.removeAll()
+                    Logger.emojiArtDocumentView.info("All emojis deselected!")
+                }
+            }
+    }
+    
     // when double tab to zoom gesture
     private func zoomToFit(_ image: UIImage?, in size: CGSize) {
         if let image = image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
@@ -164,6 +200,15 @@ struct EmojiArtDocumentView: View {
     // position an emoji on the document
     private func position(for emoji: EmojiArtModel.Emoji, in geometry: GeometryProxy) -> CGPoint {
         convertFromEmojiCoordinates((emoji.x, emoji.y), in: geometry)
+    }
+    
+    // offset the emoji selection
+    private func selectionOffset(for emoji: EmojiArtModel.Emoji) -> CGSize {
+        
+        let x = (CGFloat(emoji.x)) * zoomScale + panOffset.width
+        let y = (CGFloat(emoji.y)) * zoomScale + panOffset.height
+        
+        return CGSize(width: x, height: y)
     }
     
     // convert from the view coordinates (upper left 0/0) to the emoji art coordinates
