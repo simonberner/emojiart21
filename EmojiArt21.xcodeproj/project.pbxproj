@@ -60,6 +60,7 @@
 		1534057D267A334100A41D73 /* LoggerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtension.swift; sourceTree = "<group>"; };
 		1534057F267A4C1A00A41D73 /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		15392D6326763A6E00735DE4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		154D6F98268DB5E700292C46 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1562746B2672599900642AA5 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +93,7 @@
 		151CCAF22670FB950042470D = {
 			isa = PBXGroup;
 			children = (
+				154D6F98268DB5E700292C46 /* README.md */,
 				15392D6326763A6E00735DE4 /* .gitignore */,
 				151CCAFD2670FB950042470D /* EmojiArt21 */,
 				151CCB0F2670FB970042470D /* EmojiArt21Tests */,
@@ -113,6 +115,7 @@
 		151CCAFD2670FB950042470D /* EmojiArt21 */ = {
 			isa = PBXGroup;
 			children = (
+				154D6F99268DF36400292C46 /* assets */,
 				151CCB292670FBCF0042470D /* EmojiArt21.entitlements */,
 				151CCAFE2670FB950042470D /* EmojiArt21App.swift */,
 				151CCB002670FB950042470D /* EmojiArtDocumentView.swift */,
@@ -153,6 +156,13 @@
 				151CCB1D2670FB970042470D /* Info.plist */,
 			);
 			path = EmojiArt21UITests;
+			sourceTree = "<group>";
+		};
+		154D6F99268DF36400292C46 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
