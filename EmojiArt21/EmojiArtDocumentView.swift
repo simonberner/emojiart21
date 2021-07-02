@@ -37,7 +37,8 @@ struct EmojiArtDocumentView: View {
                             .font(.system(size: fontSize(for: emoji)))
                             .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
-                            .gesture(selectionGesture(for: emoji))
+                            .gesture(selectionGesture(for: emoji)
+                                        .exclusively(before: longPressToDeleteGesture(for: emoji)))
                             .background(Circle()
                                             .stroke(Color.blue, lineWidth: 2.0)
                                             .opacity(isSelected(emoji) ? 1 : 0)
@@ -169,6 +170,14 @@ struct EmojiArtDocumentView: View {
         TapGesture(count: 1) // single tap
             .onEnded {
                 selectedEmojis.toogleMatching(element: emoji)
+            }
+    }
+    
+    private func longPressToDeleteGesture(for emoji: EmojiArtModel.Emoji) -> some Gesture {
+        LongPressGesture()
+            // action is triggered when the long press is released
+            .onEnded {_ in
+                document.deleteEmoji(emoji)
             }
     }
     
