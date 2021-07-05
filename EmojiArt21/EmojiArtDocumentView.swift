@@ -42,7 +42,9 @@ struct EmojiArtDocumentView: View {
                             .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
                             .gesture(selectionGesture(for: emoji)
-                                        .exclusively(before: longPressToDeleteGesture(for: emoji)))
+                                        .exclusively(before: dragSelectedEmojisGesture())
+                                        .exclusively(before: longPressToDeleteGesture(for: emoji))
+                            )
                             .background(Circle()
                                             .stroke(Color.blue, lineWidth: 2.0)
                                             .opacity(isSelected(emoji) ? 1 : 0)
@@ -119,6 +121,29 @@ struct EmojiArtDocumentView: View {
             }
             .onEnded { finalDragGestureValue in
                 steadyStatePanOffset = steadyStatePanOffset + (finalDragGestureValue.translation / zoomScale)
+            }
+    }
+    
+    // dragging selected emojis on the document (to follow the user's finger)
+    @State private var steadyStateEmojiDragOffset: CGSize = CGSize.zero
+    // gesture state var for capturing the CGSize while the dragging gesture is happening
+    @GestureState private var gestureStateEmojiDragOffset: CGSize = CGSize.zero
+    
+    private func dragSelectedEmojisGesture () -> some Gesture {
+        DragGesture()
+            // gestureStateEmojiDragOffset is an in/out param which updates the @GestureState var
+            .updating($gestureStateEmojiDragOffset) { latestGestureStateEmojiDragOffset, gestureStateEmojiDragOffset, _ in
+                gestureStateEmojiDragOffset = latestGestureStateEmojiDragOffset.translation / zoomScale
+            }
+            .onEnded { finalEmojiDragGestureValue in
+                let distanceDragged = finalEmojiDragGestureValue.translation / zoomScale
+                
+                for emoji in selectedEmojis {
+                    withAnimation {
+                        document.moveEmoji(emoji, by: distanceDragged)
+                    }
+                    selectedEmojis.remove(emoji)
+                }
             }
     }
         
