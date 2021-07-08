@@ -39,7 +39,7 @@ struct EmojiArtDocumentView: View {
                     ForEach(document.emojis) { emoji in
                         Text(emoji.text)
                             .font(.system(size: fontSize(for: emoji)))
-                            .scaleEffect(zoomScale)
+//                            .scaleEffect(zoomScale)
                             .position(position(for: emoji, in: geometry))
                             .gesture(selectionGesture(for: emoji)
                                         .exclusively(before: dragSelectedEmojisGesture())
@@ -61,6 +61,7 @@ struct EmojiArtDocumentView: View {
                 drop(providers: providers, at: location, in: geometry)
             }
             // recommendation: put no more than one .gesture on any view
+            // MARK: but is it fine to add further gestures .simultaneously or .exclusively??
             .gesture(panGesture().simultaneously(with: zoomGesture()))
         }
         
@@ -100,11 +101,11 @@ struct EmojiArtDocumentView: View {
         return found
     }
     
-    // used later on when pinching the size of an emoji
+    // the final emoji fontSize is the emoji size * zoomScale
     private func fontSize(for emoji: EmojiArtModel.Emoji) -> CGFloat {
-        CGFloat(emoji.size)
+        CGFloat(emoji.size) * zoomScale(for: emoji)
     }
-    
+      
     // panning around the document (width and height directions for each var)
     @State private var steadyStatePanOffset: CGSize = CGSize.zero
     // state var while the gesture (panning) is happening
@@ -168,12 +169,23 @@ struct EmojiArtDocumentView: View {
     
     // combination of the two zoomScales above
     // takes effect when the gestureZoomScale is happening
+    // if no emojis are selected for zooming, the document and all emojis are zoomed (in/out)
+    // if emojis are selected, the document is not zoomed in/out -> : 1
     private var zoomScale: CGFloat {
-        steadyStateZoomScale * gestureZoomScale
+        steadyStateZoomScale * (selectedEmojis.isEmpty ? gestureZoomScale : 1)
     }
     
+    // zoomScale (when pinching and then zoom in/out) for selected emojis
+    private func zoomScale(for emoji: EmojiArtModel.Emoji) -> CGFloat {
+        if isSelected(emoji) {
+           return steadyStateZoomScale * gestureZoomScale
+        }
+        return zoomScale
+    }
+    
+    // pinch and zoom in/out the whole document or selected emojis
     private func zoomGesture() -> some Gesture {
-        // an non-descrete gesture, pinch-to-zoom
+        // an non-discrete gesture, pinch-to-zoom in/out
         MagnificationGesture()
             // gesture modifier, 3 arguments closure which is constantly called
             // update the @GestureState gestureZoomScale
@@ -183,7 +195,14 @@ struct EmojiArtDocumentView: View {
             }
             // with onEnded, we get the var gestureScaleAtEnd which gets passed to us
             .onEnded { gestureScaleAtEnd in
-                steadyStateZoomScale *= gestureScaleAtEnd
+                // if no emojis are selected in the document
+                if selectedEmojis.isEmpty {
+                    steadyStateZoomScale *= gestureScaleAtEnd
+                } else {
+                    selectedEmojis.forEach { emoji in
+                        document.scaleEmoji(emoji, by: gestureScaleAtEnd)
+                    }
+                }
             }
     }
     
