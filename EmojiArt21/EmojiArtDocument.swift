@@ -10,9 +10,41 @@ class EmojiArtDocument: ObservableObject {
         // didSet (property observer) gets called whenever something in the model changes
         // (e.g. when we drag and drop an image or url into the model)
         didSet {
+            autosave()
             if emojiArt.background != oldValue.background {
                 fetchBackgroundImageDataIfNecessary() // we might have to fetch the backgroundImage
             }
+        }
+    }
+    
+    private struct Autosave {
+        static let filename = "Autosave.emojiart"
+        static var url: URL? {
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return documentDirectory?.appendingPathComponent(filename)
+        }
+    }
+    
+    private func autosave () {
+        if let url = Autosave.url {
+            save(to: url)
+        }
+    }
+    
+    private func save(to url: URL) {
+        // a general way of getting the name of this function as a String for print/Logger
+        let  thisfunction = "\(String(describing: self)).\(#function)"
+        do {
+            // Data is a byte buffer (bag of bits)
+            let data: Data = try emojiArt.json()
+            Logger.emojiArtDocumentView.info("\(thisfunction) json = \(String(data: data, encoding: .utf8) ?? "nil")")
+            try data.write(to: url)
+            Logger.emojiArtDocumentView.info("\(thisfunction) success!")
+        } catch let encodingError where encodingError is EncodingError {
+            print("\(thisfunction) couldn't encode EmojiArt as JSON because \(encodingError.localizedDescription)")
+        } catch {
+            print("\(thisfunction) error = \(error)")
+            //            Logger.emojiArtDocumentView.info("EmojiArtDocument.save(to) error = \(error)")
         }
     }
     
@@ -58,10 +90,17 @@ class EmojiArtDocument: ObservableObject {
     }
     
     init() {
-        emojiArt = EmojiArtModel()
-//        emojiArt.addEmoji("😷", at: (-200, -100), size: 80)
-//        emojiArt.addEmoji("😇", at: (0, 0), size: 80)
-
+        // if we have a valid Autosave url AND based on this url an EmojiArtModel (which is not nil)
+        // in the long run, we will not use this "aggressive" austosave mechanism, because we are
+        // going to use the Swift Document infrastructure
+        if let url = Autosave.url, let autosavedEmojiArt = try? EmojiArtModel(url: url) {
+            emojiArt = autosavedEmojiArt
+            fetchBackgroundImageDataIfNecessary()
+        } else {
+            emojiArt = EmojiArtModel()
+    //        emojiArt.addEmoji("😷", at: (-200, -100), size: 80)
+    //        emojiArt.addEmoji("😇", at: (0, 0), size: 80)
+        }
     }
     
     // convenient functions, so that a caller can get the emojis array of the model

@@ -1,12 +1,13 @@
 import Foundation
 
 // Model
-struct EmojiArtModel {
+struct EmojiArtModel: Codable {
+    // all the vars also have to conform to the Codable protocol!
     var background = Background.blank
-    var emojis = [Emoji]() // is an array of identifiables
+    var emojis = [Emoji]() // is an array of identifiable
     
     // Hashable to put them into a set
-    struct Emoji: Identifiable, Hashable {
+    struct Emoji: Identifiable, Hashable, Codable {
         let text: String
         var x: Int // offset from the center
         var y: Int // offset from the center
@@ -25,10 +26,29 @@ struct EmojiArtModel {
         }
     }
     
+    // encode the model into a JSON
+    func json() throws -> Data {
+        return try JSONEncoder().encode(self)
+    }
+    
     // we explicitly create a empty init so that nobody might have the idea
     // they could use the EmojiArtModels free init() to set the background
     // and emojis (which in this case the could't anyway)
     init() {}
+    
+    // initialise the model by decoding passed in json data
+    init(json: Data) throws {
+        self = try JSONDecoder().decode(EmojiArtModel.self, from: json)
+    }
+    
+    // initialise the model by getting some data from a file url
+    init(url: URL) throws {
+        // get/load the data from a file url
+        // this might block the main queue, but it is fast enough
+        // nevertheless, we leave the burden up to the caller to handle the async
+        let data = try Data(contentsOf: url)
+        self = try EmojiArtModel(json: data)
+    }
     
     private var uniqueEmojiId = 0
     
