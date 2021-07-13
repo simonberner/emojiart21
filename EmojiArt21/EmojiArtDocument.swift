@@ -8,16 +8,32 @@ class EmojiArtDocument: ObservableObject {
     // (https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html#ID17)
     @Published private(set) var emojiArt: EmojiArtModel {
         // didSet (property observer) gets called whenever something in the model changes
-        // (e.g. when we drag and drop an image or url into the model)
+        // (e.g. when we drag and drop an image, emoji or url into the model)
         didSet {
-            autosave()
+            scheduleAutosave()
             if emojiArt.background != oldValue.background {
                 fetchBackgroundImageDataIfNecessary() // we might have to fetch the backgroundImage
             }
         }
     }
     
+    private var autosaveTimer: Timer?
+    
+    private func scheduleAutosave () {
+        // cancelling the previous timer, if the func is triggered more than once in 5 sec
+        autosaveTimer?.invalidate()
+        // 3rd argument takes a closure (which takes a timer as argument from what
+        // scheduledTimer returns.
+        // coalesce here: we want to coalesce (connect) the autosave with a timer
+        autosaveTimer = Timer.scheduledTimer(withTimeInterval: Autosave.coalescingInterval, repeats: false) { timer in
+            // don't use weak self here because we want to keep self in memory
+            Logger.emojiArtDocument.info("scheduleAutosave timer.fireDate: \(timer.fireDate)")
+            self.autosave()
+        }
+    }
+    
     private struct Autosave {
+        static let coalescingInterval = 5.0
         static let filename = "Autosave.emojiart"
         static var url: URL? {
             let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
