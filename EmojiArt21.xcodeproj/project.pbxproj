@@ -18,7 +18,6 @@
 		151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB2E267155750042470D /* EmojiArtDocument.swift */; };
 		1534057E267A334100A41D73 /* LoggerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1534057D267A334100A41D73 /* LoggerExtension.swift */; };
 		15340580267A4C1A00A41D73 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1534057F267A4C1A00A41D73 /* UtilityViews.swift */; };
-		15392D622676346D00735DE4 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 15392D612676346D00735DE4 /* SwiftUIX */; };
 		15392D6426763A6E00735DE4 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 15392D6326763A6E00735DE4 /* .gitignore */; };
 		1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562746B2672599900642AA5 /* UtilityExtensions.swift */; };
 /* End PBXBuildFile section */
@@ -69,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15392D622676346D00735DE4 /* SwiftUIX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,7 +180,6 @@
 			);
 			name = EmojiArt21;
 			packageProductDependencies = (
-				15392D612676346D00735DE4 /* SwiftUIX */,
 			);
 			productName = EmojiArt21;
 			productReference = 151CCAFB2670FB950042470D /* EmojiArt21.app */;
@@ -643,14 +640,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		15392D612676346D00735DE4 /* SwiftUIX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 15392D602676346D00735DE4 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
-			productName = SwiftUIX;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 151CCAF32670FB950042470D /* Project object */;
 }
