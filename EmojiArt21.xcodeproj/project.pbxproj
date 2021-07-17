@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1501E335269E221D00D3DFA1 /* PaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501E334269E221D00D3DFA1 /* PaletteStore.swift */; };
 		151CCAFF2670FB950042470D /* EmojiArt21App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCAFE2670FB950042470D /* EmojiArt21App.swift */; };
 		151CCB012670FB950042470D /* EmojiArtDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151CCB002670FB950042470D /* EmojiArtDocumentView.swift */; };
 		151CCB032670FB970042470D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 151CCB022670FB970042470D /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1501E334269E221D00D3DFA1 /* PaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteStore.swift; sourceTree = "<group>"; };
 		151CCAFB2670FB950042470D /* EmojiArt21.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EmojiArt21.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		151CCAFE2670FB950042470D /* EmojiArt21App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArt21App.swift; sourceTree = "<group>"; };
 		151CCB002670FB950042470D /* EmojiArtDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiArtDocumentView.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				151CCB042670FB970042470D /* Preview Content */,
 				1534057D267A334100A41D73 /* LoggerExtension.swift */,
 				1534057F267A4C1A00A41D73 /* UtilityViews.swift */,
+				1501E334269E221D00D3DFA1 /* PaletteStore.swift */,
 			);
 			path = EmojiArt21;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				151CCAFF2670FB950042470D /* EmojiArt21App.swift in Sources */,
 				1562746C2672599900642AA5 /* UtilityExtensions.swift in Sources */,
 				151CCB2F267155750042470D /* EmojiArtDocument.swift in Sources */,
+				1501E335269E221D00D3DFA1 /* PaletteStore.swift in Sources */,
 				151CCB2B2670FD740042470D /* EmojiArtModel.swift in Sources */,
 				1534057E267A334100A41D73 /* LoggerExtension.swift in Sources */,
 				151CCB2D267119C60042470D /* EmojiArtModel.Background.swift in Sources */,
