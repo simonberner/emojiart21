@@ -49,7 +49,7 @@ struct EmojiArtDocumentView: View {
                                             .stroke(Color.blue, lineWidth: 2.0)
                                             .opacity(isSelected(emoji) ? 1 : 0)
                                             .offset(selectionOffset(for: emoji))
-                                            .frame(width: 30 * zoomScale, height: 30 * zoomScale, alignment: .center)
+                                            .frame(width: 30 * zoomScale(for: emoji), height: 30 * zoomScale(for: emoji), alignment: .center)
                             )
                     }
                 }
