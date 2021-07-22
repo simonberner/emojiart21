@@ -16,7 +16,7 @@ struct EmojiArtDocumentView: View {
                 emojiDeleteButton
             })
             documentBody
-            palette
+            PaletteChooser(emojiFontSize: defaultEmojiFontSize)
         }
     }
     
@@ -107,6 +107,7 @@ struct EmojiArtDocumentView: View {
     }
       
     // panning around the document (width and height directions for each var)
+    // (@State: property wrapper which makes the var live in the heap)
     @State private var steadyStatePanOffset: CGSize = CGSize.zero
     // state var while the gesture (panning) is happening
     @GestureState private var gesturePanOffset: CGSize = CGSize.zero
@@ -294,11 +295,6 @@ struct EmojiArtDocumentView: View {
         )
     }
     
-    var palette: some View {
-        ScrollingEmojisView(emojis: testEmojis)
-            .font(.system(size: defaultEmojiFontSize))
-    }
-    
     var emojiDeleteButton: some View {
         Button(action: {
             selectedEmojis.forEach { emoji in
@@ -311,30 +307,9 @@ struct EmojiArtDocumentView: View {
         .padding()
     }
     
-    let testEmojis = "😍😎❤🎉🎾🍓🥂😀"
 }
 
-struct ScrollingEmojisView: View {
-    let emojis: String
 
-    var body: some View {
-        
-        ScrollView(.horizontal) {
-            HStack {
-                // map is a very important function:
-                // matches the emojis String to an array of strings
-                // String($0 -> means first character!): changes every character (emoji) in to a String
-                // These Strings need to also be identifiable (we don't want to put any duplicate emojis
-                // in our emojis array) so we put the emoji string itself (\.self) as an id
-                ForEach(emojis.map { String($0) }, id: \.self) { emoji in
-                    Text(emoji)
-                        // the NSItemProvider provides us with its information asynchronously
-                        .onDrag({ NSItemProvider(object: emoji as NSString) }) // NS comes from the Objective-C world
-                }
-            }
-        }
-    }
-}
 
 
 

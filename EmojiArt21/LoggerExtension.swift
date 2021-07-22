@@ -12,5 +12,7 @@ extension Logger {
     static let utilityExtensions = Logger(subsystem: subsystem, category: "UtilityExtensions")
     // Logs the View Model: PaletteStore
     static let paletteStore = Logger(subsystem: subsystem, category: "PaletteStore")
+    // Logs the View: PaletteChooser
+    static let paletteChooser = Logger(subsystem: subsystem, category: "PaletteChooser")
 
 }

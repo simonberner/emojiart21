@@ -131,3 +131,14 @@ extension Set where Element: Identifiable {
         }
     }
 }
+
+// extension to remove duplicate Strings
+extension String {
+    var removingDuplicateCharacters: String {
+        reduce(into: "") { sofar, element in
+            if !sofar.contains(element) {
+                sofar.append(element)
+            }
+        }
+    }
+}
