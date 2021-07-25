@@ -14,6 +14,8 @@ struct PaletteChooser: View {
             paletteControlButton
             body(for: store.getPalette(at: chosenPaletteIndex))
         }
+        // clip this view so that it does not smash into other views
+        .clipped()
     }
     
     // computed property of type view
@@ -37,6 +39,17 @@ struct PaletteChooser: View {
             ScrollingEmojisView(emojis: palette.emojis)
                 .font(emojiFont)
         }
+        // when the identifiable of the view changes, the view is going to be replaced with the view of the new id
+        // (When the proxy value specified by the id parameter changes, the identity of the view — for example, its state — is reset.)
+        .id(palette.id)
+        .transition(rollTransition)
+    }
+    
+    var rollTransition: AnyTransition {
+        AnyTransition.asymmetric(
+            insertion: .offset(x: 0, y: emojiFontSize),
+            removal: .offset(x: 0, y: -emojiFontSize)
+        )
     }
 }
 
