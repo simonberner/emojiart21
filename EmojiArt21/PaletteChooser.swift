@@ -31,6 +31,36 @@ struct PaletteChooser: View {
             Image(systemName: "paintpalette")
         }
         .font(emojiFont)
+        .contextMenu(ContextMenu(menuItems: {
+            contextMenu
+        }))
+    }
+    
+    // ViewBuilder for creating a list of views
+    @ViewBuilder
+    var contextMenu: some View {
+        AnimatedActionButton(title: "New", systemImage: "plus") {
+            store.insertPalette(named: "New", emojis: "", at: chosenPaletteIndex)
+        }
+        AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
+            store.removePalette(at: chosenPaletteIndex)
+        }
+        gotoMenu
+    }
+    
+    var gotoMenu: some View {
+        Menu {
+            ForEach (store.palettes) { palette in
+                AnimatedActionButton(title: palette.name) {
+                    if let index = store.palettes.index(matching: palette) {
+                        chosenPaletteIndex = index
+                    }
+                }
+            }
+            
+        } label: {
+            Label("Go to", systemImage: "text.insert")
+        }
     }
     
     func body(for palette: Palette) -> some View {

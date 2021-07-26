@@ -4,7 +4,9 @@ import OSLog
 // extension for the protocol Collection
 extension Collection where Element: Identifiable {
     // return value is Self.Index? Optional because some collections are not indexed by Ints
+    // $0.id is shorthand for accessing the callers id member var (palette.id)
     func index(matching element: Element) -> Self.Index? {
+        // return the index of the element in the collection where the id of the matching element equals the one in the collection
         firstIndex(where: {$0.id == element.id})
     }
 }
