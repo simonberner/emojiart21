@@ -144,3 +144,29 @@ extension String {
         }
     }
 }
+
+extension RangeReplaceableCollection where Element: Identifiable {
+    mutating func remove(_ element: Element) {
+        if let index = index(matching: element) {
+            remove(at: index)
+        }
+    }
+    
+    // with that subscript we can pass an element to a RangeReplaceableCollection
+    // and it will return the index of that element (if it is in the collection)
+    public subscript(_ element: Element) -> Element {
+        get {
+            if let index = index(matching: element) {
+                return self[index]
+            } else {
+                return element
+            }
+        }
+        set {
+            // newValue is of type Element (same as the return type of the subscript)
+            if let index = index(matching: element) {
+                replaceSubrange(index...index, with: [newValue])
+            }
+        }
+    }
+}

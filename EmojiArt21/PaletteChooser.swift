@@ -39,8 +39,14 @@ struct PaletteChooser: View {
     // ViewBuilder for creating a list of views
     @ViewBuilder
     var contextMenu: some View {
+        AnimatedActionButton(title: "Edit", systemImage: "pencil") {
+//            editing = true
+            paletteToEdit = store.getPalette(at: chosenPaletteIndex)
+        }
         AnimatedActionButton(title: "New", systemImage: "plus") {
             store.insertPalette(named: "New", emojis: "", at: chosenPaletteIndex)
+//            editing = true
+            paletteToEdit = store.getPalette(at: chosenPaletteIndex)
         }
         AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
             store.removePalette(at: chosenPaletteIndex)
@@ -73,7 +79,21 @@ struct PaletteChooser: View {
         // (When the proxy value specified by the id parameter changes, the identity of the view — for example, its state — is reset.)
         .id(palette.id)
         .transition(rollTransition)
+//        .popover(isPresented: $editing, content: {
+//            //$store create a binding into the view model @EnvironmentObject store above
+//            // remember: a binding is getting and setting a value
+//            PaletteEditor(palette: $store.palettes[chosenPaletteIndex])
+//        })
+        // this is a bit cleaner code than above (doing the boolean stuff) to show the popover
+        .popover(item: $paletteToEdit, content: { palette in
+            // we are indexing the palettes with another palette
+            // (see UtilityExtensions -> RangeReplaceableCollection)
+            PaletteEditor(palette: $store.palettes[palette])
+        })
     }
+    
+//    @State private var editing = false
+    @State private var paletteToEdit: Palette?
     
     var rollTransition: AnyTransition {
         AnyTransition.asymmetric(
