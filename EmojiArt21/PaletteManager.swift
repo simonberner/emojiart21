@@ -7,14 +7,21 @@ struct PaletteManager: View {
     @EnvironmentObject var store: PaletteStore
     
     var body: some View {
-        // List (is among the powerful views like 'Form' in SwiftUI!)
-        List {
-            ForEach(store.palettes) { palette in
-                VStack(alignment: .leading, spacing: nil, content: {
-                    Text(palette.name)
-                    Text(palette.emojis)
-                })
+        NavigationView {
+            // List (is among the powerful views like 'Form' in SwiftUI!)
+            List {
+                ForEach(store.palettes) { palette in
+                    // NavigationLink view only work in conjunction with a NavigationView!
+                    NavigationLink(destination: PaletteEditor(palette: $store.palettes[palette])) {
+                        VStack(alignment: .leading, spacing: nil, content: {
+                            Text(palette.name)
+                            Text(palette.emojis)
+                        })
+                    }
+                }
             }
+            .navigationTitle("Manage Palettes")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
