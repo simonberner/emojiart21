@@ -51,6 +51,9 @@ struct PaletteChooser: View {
         AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
             store.removePalette(at: chosenPaletteIndex)
         }
+        AnimatedActionButton(title: "Manager", systemImage: "slider.vertical.3") {
+            managing = true
+        }
         gotoMenu
     }
     
@@ -90,9 +93,15 @@ struct PaletteChooser: View {
             // (see UtilityExtensions -> RangeReplaceableCollection)
             PaletteEditor(palette: $store.palettes[palette])
         })
+        // when the state var managing is true, the PaletteManager is shown
+        .sheet(isPresented: $managing, content: {
+            PaletteManager()
+        })
     }
     
 //    @State private var editing = false
+    // state var for bringing up the PaletteManager
+    @State private var managing = false
     @State private var paletteToEdit: Palette?
     
     var rollTransition: AnyTransition {
