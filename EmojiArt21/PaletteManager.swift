@@ -10,6 +10,8 @@ struct PaletteManager: View {
     // here the var which has the value from the \.colorScheme
     // (Documentation: EnvironmentValues)
     @Environment(\.colorScheme) var colorScheme
+    // Dismiss/Close a view (if it is presented in a popover)
+    @Environment(\.presentationMode) var presentationMode
     
     @State private var editMode: EditMode = .inactive
     
@@ -42,9 +44,23 @@ struct PaletteManager: View {
 //            .environment(\.colorScheme, .dark)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // this edit button is looking at the binding $editMode and toggles it
-                // setting the view into edit mode
-                EditButton()
+                ToolbarItem {
+                    // this edit button is looking at the binding $editMode and toggles it
+                    // setting the view into edit mode
+                    EditButton()
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    // if the presentationMode is presented AND
+                    // the device is an ipad (currently commented out)
+                    // show the 'Close' button
+                    if presentationMode.wrappedValue.isPresented {
+                       // this is from UIKit
+//                       UIDevice.current.userInterfaceIdiom != .pad {
+                        Button("Close") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
             }
             // List is using the binding to check whether it is in edit mode or not
             .environment(\.editMode, $editMode)
