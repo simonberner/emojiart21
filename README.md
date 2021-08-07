@@ -1,8 +1,13 @@
-# EmojiArt
+# EmojiArt 2021
 ![EmojiArt](assets/EmojiArt.png)
 
 This is a work in progress learning project for my personal endeavours of becoming an iOS Developer one day.
-EmojiArt is an iOS app (for iPhone and iPad >= iOS14) to practice different Gestures in SwiftUI.
+EmojiArt is an iOS app (for iPhone and iPad >= iOS14) to practice different Gestures with SwiftUI.
+
+## Technologies
+- Xcode 12.5.1
+- Swift 5.4
+- SwiftUI 
 
 ## Persistance
 All the data that is created by the user is stored locally using [UserDefaults](https://developer.apple.com/documentation/foundation/userdefaults) and is only deleted when the app is deleted. I am aware that [UserDefaults](https://www.hackingwithswift.com/example-code/system/how-to-save-user-settings-using-userdefaults)
