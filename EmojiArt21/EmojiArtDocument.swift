@@ -69,9 +69,13 @@ class EmojiArtDocument: ObservableObject {
     @Published var backgroundImage: UIImage?
     @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
     
-    enum BackgroundImageFetchStatus {
+    // if an enum must be equatable and has an associated value,
+    // we need to force Swift to go off and implement equatable for us
+    // (as long URL here is equatable, Swift can figure that out)
+    enum BackgroundImageFetchStatus: Equatable {
         case idle
         case fetching
+        case failed(URL)
     }
     
     private func fetchBackgroundImageDataIfNecessary() {
@@ -94,6 +98,9 @@ class EmojiArtDocument: ObservableObject {
                         if imageData != nil {
                             // self?: if self is nil, don't do the rest
                             self?.backgroundImage = UIImage(data: imageData!)
+                        }
+                        if self?.backgroundImage == nil {
+                            self?.backgroundImageFetchStatus = .failed(url)
                         }
                     }
                 }

@@ -63,8 +63,31 @@ struct EmojiArtDocumentView: View {
             // recommendation: put no more than one .gesture on any view
             // MARK: but is it fine to add further gestures .simultaneously or .exclusively??
             .gesture(panGesture().simultaneously(with: zoomGesture()))
+            // if the var alertToShow is not nil, the Alert will be shown
+            .alert(item: $alertToShow) { alertToShow in
+                alertToShow.alert()
+            }
+            .onChange(of: document.backgroundImageFetchStatus, perform: { status in
+                switch status {
+                case .failed(let url):
+                    showBackgroundImageFetchFailedAlert(url)
+                default :
+                    break
+                }
+            })
         }
         
+    }
+    
+    @State private var alertToShow: IdentifiableAlert?
+    
+    private func showBackgroundImageFetchFailedAlert(_ url: URL) {
+        // for the IdentifiableAlert we need to provide an id and an Alert as closure
+        alertToShow = IdentifiableAlert(id: "fetch failed" + url.absoluteString, alert: {
+            Alert(title: Text("Background Image Fetch"),
+                  message: Text("Couldn't load image from \(url)."),
+                  dismissButton: .default(Text("OK")))
+        })
     }
     
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {
