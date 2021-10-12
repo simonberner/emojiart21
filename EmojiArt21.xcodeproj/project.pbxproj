@@ -184,6 +184,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 151CCB202670FB970042470D /* Build configuration list for PBXNativeTarget "EmojiArt21" */;
 			buildPhases = (
+				158C00F427160C8200F8E6A6 /* ShellScript */,
 				151CCAF72670FB950042470D /* Sources */,
 				151CCAF82670FB950042470D /* Frameworks */,
 				151CCAF92670FB950042470D /* Resources */,
@@ -306,6 +307,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		158C00F427160C8200F8E6A6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		151CCAF72670FB950042470D /* Sources */ = {
