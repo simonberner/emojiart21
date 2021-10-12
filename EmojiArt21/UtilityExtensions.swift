@@ -26,7 +26,7 @@ extension CGRect {
 extension Array where Element == NSItemProvider {
     func loadObjects<T>(ofType theType: T.Type, firstOnly: Bool = false, using load: @escaping (T) -> Void) -> Bool where T: NSItemProviderReading {
         if let provider = first(where: { $0.canLoadObject(ofClass: theType) }) {
-            provider.loadObject(ofClass: theType) { object, error in
+            provider.loadObject(ofClass: theType) { object, _ in
                 if let value = object as? T {
                     DispatchQueue.main.async {
                         load(value)
@@ -39,7 +39,7 @@ extension Array where Element == NSItemProvider {
     }
     func loadObjects<T>(ofType theType: T.Type, firstOnly: Bool = false, using load: @escaping (T) -> Void) -> Bool where T: _ObjectiveCBridgeable, T._ObjectiveCType: NSItemProviderReading {
         if let provider = first(where: { $0.canLoadObject(ofClass: theType) }) {
-            let _ = provider.loadObject(ofClass: theType) { object, error in
+            _ = provider.loadObject(ofClass: theType) { object, _ in
                 if let value = object {
                     DispatchQueue.main.async {
                         load(value)
@@ -105,16 +105,16 @@ extension CGSize {
     var center: CGPoint {
         CGPoint(x: width/2, y: height/2)
     }
-    static func +(leftHandSide: Self, rightHandSide: Self) -> CGSize {
+    static func + (leftHandSide: Self, rightHandSide: Self) -> CGSize {
         CGSize(width: leftHandSide.width + rightHandSide.width, height: leftHandSide.height + rightHandSide.height)
     }
-    static func -(leftHandSide: Self, rightHandSide: Self) -> CGSize {
+    static func - (leftHandSide: Self, rightHandSide: Self) -> CGSize {
         CGSize(width: leftHandSide.width - rightHandSide.width, height: leftHandSide.height - rightHandSide.height)
     }
-    static func *(leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
+    static func * (leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
         CGSize(width: leftHandSide.width * rightHandSide, height: leftHandSide.height * rightHandSide)
     }
-    static func /(leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
+    static func / (leftHandSide: Self, rightHandSide: CGFloat) -> CGSize {
         CGSize(width: leftHandSide.width / rightHandSide, height: leftHandSide.height / rightHandSide)
     }
 }
@@ -151,7 +151,7 @@ extension RangeReplaceableCollection where Element: Identifiable {
             remove(at: index)
         }
     }
-    
+
     // with that subscript we can pass an element to a RangeReplaceableCollection
     // and it will return the index of that element (if it is in the collection)
     public subscript(_ element: Element) -> Element {

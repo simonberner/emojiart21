@@ -12,9 +12,9 @@ struct PaletteManager: View {
     @Environment(\.colorScheme) var colorScheme
     // Dismiss/Close a view (if it is presented in a popover)
     @Environment(\.presentationMode) var presentationMode
-    
+
     @State private var editMode: EditMode = .inactive
-    
+
     var body: some View {
         NavigationView {
             // List (is among the powerful views like 'Form' in SwiftUI!)
@@ -66,22 +66,14 @@ struct PaletteManager: View {
             .environment(\.editMode, $editMode)
         }
     }
-    
+
     // for later use...
     var tap: some Gesture {
         TapGesture().onEnded {
-            
+
         }
     }
 }
-
-
-
-
-
-
-
-
 
 struct PaletteManager_Previews: PreviewProvider {
     static var previews: some View {

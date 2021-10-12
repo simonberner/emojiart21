@@ -1,9 +1,17 @@
+disabled_rules:
+  - shorthand_operator
+
 line_length: 350
 
 identifier_name:
   min_length: # only min_length
     error: 1 # only error
   excluded: # excluded via string array
+    - x
+    - y
     - id
     - URL
     - GlobalAPIKey
+
+nesting:
+    type_level: 3

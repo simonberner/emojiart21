@@ -5,7 +5,7 @@ struct EmojiArt21App: App {
     // View Models which are the source of through
     @StateObject var document = EmojiArtDocument()
     @StateObject var paletteStore = PaletteStore(named: "Default")
-    
+
     var body: some Scene {
         WindowGroup {
             EmojiArtDocumentView(document: document)

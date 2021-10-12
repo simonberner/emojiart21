@@ -3,7 +3,7 @@ import OSLog
 
 extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!
-    
+
     // Logs the View: EmojiArtDocumentView
     static let emojiArtDocumentView = Logger(subsystem: subsystem, category: "EmojiArtDocumentView")
     // Logs the View Model: EmojiArtDocument

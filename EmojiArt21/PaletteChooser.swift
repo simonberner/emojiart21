@@ -5,10 +5,10 @@ import OSLog
 struct PaletteChooser: View {
     var emojiFontSize: CGFloat = 40
     var emojiFont: Font {.system(size: emojiFontSize)}
-    
+
     @EnvironmentObject var store: PaletteStore
     @State var chosenPaletteIndex = 0
-    
+
     var body: some View {
         HStack {
             paletteControlButton
@@ -17,7 +17,7 @@ struct PaletteChooser: View {
         // clip this view so that it does not smash into other views
         .clipped()
     }
-    
+
     // computed property of type view
     var paletteControlButton: some View {
         Button {
@@ -35,7 +35,7 @@ struct PaletteChooser: View {
             contextMenu
         }))
     }
-    
+
     // ViewBuilder for creating a list of views
     @ViewBuilder
     var contextMenu: some View {
@@ -56,22 +56,22 @@ struct PaletteChooser: View {
         }
         gotoMenu
     }
-    
+
     var gotoMenu: some View {
         Menu {
-            ForEach (store.palettes) { palette in
+            ForEach(store.palettes) { palette in
                 AnimatedActionButton(title: palette.name) {
                     if let index = store.palettes.index(matching: palette) {
                         chosenPaletteIndex = index
                     }
                 }
             }
-            
+
         } label: {
             Label("Go to", systemImage: "text.insert")
         }
     }
-    
+
     func body(for palette: Palette) -> some View {
         HStack {
             Text(palette.name)
@@ -98,12 +98,12 @@ struct PaletteChooser: View {
             PaletteManager()
         })
     }
-    
+
 //    @State private var editing = false
     // state var for bringing up the PaletteManager
     @State private var managing = false
     @State private var paletteToEdit: Palette?
-    
+
     var rollTransition: AnyTransition {
         AnyTransition.asymmetric(
             insertion: .offset(x: 0, y: emojiFontSize),
@@ -112,13 +112,11 @@ struct PaletteChooser: View {
     }
 }
 
-
-
 struct ScrollingEmojisView: View {
     let emojis: String
 
     var body: some View {
-        
+
         ScrollView(.horizontal) {
             HStack {
                 // map is a very important function:
@@ -138,21 +136,8 @@ struct ScrollingEmojisView: View {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//struct PaletteChooser_Previews: PreviewProvider {
+// struct PaletteChooser_Previews: PreviewProvider {
 //    static var previews: some View {
 //        PaletteChooser()
 //    }
-//}
+// }

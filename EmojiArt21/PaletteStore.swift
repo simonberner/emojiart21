@@ -5,22 +5,22 @@ import OSLog
 // (all view models are classes)
 class PaletteStore: ObservableObject {
     let name: String
-    
+
     @Published var palettes = [Palette]() {
         didSet {
             storeInUserDefaults()
         }
     }
-    
+
     // a computed property
     private var userDefaultsKey: String {
         "PaletteStore:" + name
     }
-    
+
     private func storeInUserDefaults() {
         UserDefaults.standard.set(try? JSONEncoder().encode(palettes), forKey: userDefaultsKey)
     }
-    
+
     private func restoreFromUserDefaults() {
         // if some data is returned for the key AND
         // we have an Array<Palette> THEN
@@ -30,9 +30,8 @@ class PaletteStore: ObservableObject {
            let decodedPalettes = try? JSONDecoder().decode([Palette].self, from: jsonData) {
             palettes = decodedPalettes
         }
-        
     }
-    
+
     init(named name: String) {
         self.name = name
         restoreFromUserDefaults()
@@ -51,7 +50,7 @@ class PaletteStore: ObservableObject {
             Logger.paletteStore.info("successfully loaded from UserDefaults: \(self.palettes)")
         }
     }
-    
+
     // MARK: - Intent (functions)
 
     func getPalette(at index: Int) -> Palette {
@@ -59,7 +58,7 @@ class PaletteStore: ObservableObject {
         let safeIndex = min(max(index, 0), palettes.count - 1)
         return palettes[safeIndex]
     }
-    
+
     // insert a palette named <name> of <emojis>
     func insertPalette(named name: String, emojis: String, at index: Int = 0) {
         let palette = Palette(name: name, emojis: emojis, id: UUID())
@@ -67,7 +66,7 @@ class PaletteStore: ObservableObject {
 //        let safeIndex = max(min(index, 0), palettes.count)
         palettes.insert(palette, at: safeIndex)
     }
-    
+
     func removePalette(at index: Int) {
         // IF palettes count is greater than 1 (never remove the last palette)
         // AND it contains the index to be delete
@@ -83,7 +82,6 @@ struct Palette: Identifiable, Codable, Hashable {
     var id: UUID
     var name: String
     var emojis: String
-    
     // we only want to be able to initialise a new Palette with the insertPalette func in the above class
     // fileprivate here: only accessible within this file "file in private" or "private access within the file itself"
     // (see https://www.avanderlee.com/swift/fileprivate-private-differences-explained/)
